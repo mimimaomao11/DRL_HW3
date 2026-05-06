@@ -22,7 +22,7 @@ epsilon_decay = 0.98
 epsilon_min = 0.1
 lr = 1e-3
 
-env = GridWorld()
+env = GridWorld(mode="player")
 model = DuelingDQN()
 target_model = DuelingDQN()
 target_model.load_state_dict(model.state_dict())
@@ -99,3 +99,5 @@ plt.savefig("results/plots/loss_dueling.png")
 np.savetxt("results/logs/dueling_rewards.txt", reward_history)
 
 print("Dueling DQN training done")
+
+torch.save(model.state_dict(), "results/models/dueling.pth")

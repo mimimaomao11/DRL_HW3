@@ -30,7 +30,14 @@ model = build_model()
 target_model = build_model()
 target_model.set_weights(model.get_weights())
 
-optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+# Bonus: Learning Rate Scheduling
+lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+    initial_learning_rate=0.001,
+    decay_steps=1000,
+    decay_rate=0.9
+)
+# Bonus: Gradient Clipping
+optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule, clipnorm=1.0)
 loss_fn = tf.keras.losses.MeanSquaredError()
 
 buffer = deque(maxlen=5000)

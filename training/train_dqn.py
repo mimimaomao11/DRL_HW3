@@ -98,3 +98,5 @@ plt.savefig("results/plots/loss_dqn.png")
 print("DQN training done")
 
 np.savetxt("results/logs/dqn_rewards.txt", reward_history)
+
+torch.save(model.state_dict(), "results/models/dqn.pth")

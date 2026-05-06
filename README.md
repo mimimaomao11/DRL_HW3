@@ -4,6 +4,8 @@
 
 This project implements and compares several Deep Q-Network (DQN) variants in a GridWorld environment.
 
+📖 **Detailed Analysis**: Please refer to the [HW3 Understanding Report](HW3_Report.md) for an in-depth explanation of the Basic DQN, Experience Replay Buffer, Double DQN, and Dueling DQN.
+
 Implemented models:
 
 - DQN (Baseline)
@@ -49,12 +51,12 @@ Separates:
 - State Value V(s)
 - Advantage A(s,a)
 
-### 4. Keras DQN
+### 4. Keras & Lightning DQN (Random Mode with Training Tips)
 
-Re-implemented using TensorFlow/Keras with:
+Re-implemented using TensorFlow/Keras and PyTorch Lightning. To achieve more stable and efficient learning in the difficult `random` mode, the following **Training Tips (Bonus)** were integrated:
 
-- GradientTape optimization
-- Target network
+- **Gradient Clipping**: Prevents exploding gradients (`clipnorm` in Keras, `clip_grad_norm_` in PyTorch).
+- **Learning Rate Scheduling**: Dynamically decays learning rate over time (`ExponentialDecay` in Keras, `StepLR` in PyTorch).
 - Batch training
 
 ### 5. Rainbow DQN (Simplified)

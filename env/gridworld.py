@@ -13,6 +13,18 @@ class GridWorld:
             self.pit = [0, 1]
             self.wall = [1, 1]
 
+        elif self.mode == "player":
+            self.goal = [0, 0]
+            self.pit = [0, 1]
+            self.wall = [1, 1]
+            
+            invalid_positions = [self.goal, self.pit, self.wall]
+            while True:
+                pos = [random.randint(0, self.size - 1), random.randint(0, self.size - 1)]
+                if pos not in invalid_positions:
+                    self.player = pos
+                    break
+
         elif self.mode == "random":
             positions = []
 

@@ -34,6 +34,7 @@ target_model = DQN()
 target_model.load_state_dict(model.state_dict())
 
 optimizer = optim.Adam(model.parameters(), lr=lr)
+scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=200, gamma=0.9)
 buffer = ReplayBuffer()
 
 reward_history = []
@@ -79,6 +80,10 @@ for ep in range(episodes):
 
             optimizer.zero_grad()
             loss.backward()
+            
+            # Bonus: Gradient Clipping
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            
             optimizer.step()
 
             loss_history.append(loss.item())
@@ -92,8 +97,11 @@ for ep in range(episodes):
     if ep % 50 == 0:
         target_model.load_state_dict(model.state_dict())
 
+    # Bonus: Learning Rate Scheduling
+    scheduler.step()
+
     if ep % 100 == 0:
-        print(f"Episode {ep}, Reward: {total_reward:.2f}, Epsilon: {epsilon:.4f}")
+        print(f"Episode {ep}, Reward: {total_reward:.2f}, Epsilon: {epsilon:.4f}, LR: {scheduler.get_last_lr()[0]:.6f}")
 
 # 保存模型
 print("\nSaving model...")

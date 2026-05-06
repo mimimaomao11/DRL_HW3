@@ -22,7 +22,7 @@ epsilon_decay = 0.98
 epsilon_min = 0.1
 lr = 1e-3
 
-env = GridWorld()
+env = GridWorld(mode="player")
 model = DQN()
 target_model = DQN()
 target_model.load_state_dict(model.state_dict())
@@ -103,3 +103,5 @@ plt.savefig("results/plots/loss_double.png")
 print("Double DQN training done")
 
 np.savetxt("results/logs/double_rewards.txt", reward_history)
+
+torch.save(model.state_dict(), "results/models/double.pth")
