@@ -353,6 +353,18 @@ function updateStatsTable() {
 // Event Listeners
 frameworkSelect.addEventListener('change', (e) => {
     currentFramework = e.target.value;
+    
+    // 如果選擇的是 keras 或 lightning，強制鎖定為 Basic DQN
+    // 因為這兩個框架目前只有實作基礎 DQN 版本
+    if (currentFramework !== 'pytorch') {
+        modelSelect.value = 'dqn';
+        currentModel = 'dqn';
+        modelSelect.disabled = true;
+    } else {
+        modelSelect.disabled = false;
+    }
+    
+    updateHeatmap();
     loadChartsForFramework();
 });
 
