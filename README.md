@@ -71,11 +71,17 @@ Includes:
 
 Below shows the smoothed reward curves:
 
+![All Models Comparison](results/plots/all_models_smooth.png)
+![All Models](results/plots/all_models.png)
+![All Compare](results/plots/all_compare.png)
+![Compare All](results/plots/compare_all.png)
+
 ## Observations
 
 - DQN converges slowly but stably
 - Double & Dueling improve convergence speed
 - Keras performs similarly to PyTorch implementation
+  Both frameworks were implemented to verify cross-framework consistency and ensure the DQN logic is correct independent of library-specific abstractions.
 - Rainbow achieves higher peak performance but shows higher variance
 
 ## Key Insight

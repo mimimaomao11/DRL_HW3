@@ -13,6 +13,16 @@
     <div class="container">
         <aside class="sidebar">
             <h2>🚀 DQN Simulator</h2>
+            
+            <div class="control-group">
+                <label for="framework-select">Framework</label>
+                <select id="framework-select">
+                    <option value="pytorch">PyTorch</option>
+                    <option value="keras">Keras (TensorFlow)</option>
+                    <option value="lightning">PyTorch Lightning</option>
+                </select>
+            </div>
+
             <div class="control-group">
                 <label for="model-select">Model Architecture</label>
                 <select id="model-select">
@@ -38,8 +48,7 @@
             </div>
 
             <div class="control-group">
-                <!-- BUG FIX: 移除 dir="rtl"，改由 JS 翻轉數值，語意改為右=快 -->
-                <label for="speed-slider">Simulation Speed（← 慢 ｜ 快 →）</label>
+                <label for="speed-slider">Simulation Speed（← slow ｜ fast →）</label>
                 <input type="range" id="speed-slider" min="50" max="1000" step="50" value="750">
             </div>
 
@@ -47,7 +56,26 @@
                 <button id="btn-reset" class="btn btn-secondary">Reset Env</button>
                 <button id="btn-step" class="btn btn-secondary">Step</button>
                 <button id="btn-play" class="btn btn-primary">Auto Play</button>
+                <button id="btn-quick-result" class="btn btn-success">⏩ Quick Result</button>
             </div>
+
+            <details class="hyperparams-box">
+                <summary>⚙️ Hyperparameters</summary>
+                <div class="hyperparams-content">
+                    <label>Batch Size: <span id="batch-size-val">32</span>
+                        <input type="range" id="batch-size" min="8" max="128" step="8" value="32">
+                    </label>
+                    <label>Learning Rate: <span id="lr-val">0.001</span>
+                        <input type="range" id="lr" min="0.0001" max="0.01" step="0.0001" value="0.001">
+                    </label>
+                    <label>Gamma (Discount): <span id="gamma-val">0.95</span>
+                        <input type="range" id="gamma" min="0.9" max="0.99" step="0.01" value="0.95">
+                    </label>
+                    <label>Epsilon Decay: <span id="decay-val">0.98</span>
+                        <input type="range" id="decay" min="0.95" max="0.999" step="0.001" value="0.98">
+                    </label>
+                </div>
+            </details>
 
             <div class="stats-box">
                 <p>Steps: <span id="stat-steps">0</span></p>
@@ -61,6 +89,42 @@
             <div class="heatmap-container">
                 <h3>State Value Heatmap（max Q per cell）</h3>
                 <div class="heatmap-grid" id="heatmap"></div>
+            </div>
+
+            <div id="charts-container" class="charts-container" style="display:none;">
+                <h3>📊 Training Results</h3>
+                <div class="charts-grid">
+                    <div class="chart-item">
+                        <h4>Reward Curve</h4>
+                        <img id="reward-chart" src="" alt="Reward Curve" />
+                    </div>
+                    <div class="chart-item">
+                        <h4>Loss Curve</h4>
+                        <img id="loss-chart" src="" alt="Loss Curve" />
+                    </div>
+                    <div class="chart-item">
+                        <h4>Model Comparison</h4>
+                        <img id="comparison-chart" src="" alt="Model Comparison" />
+                    </div>
+                </div>
+            </div>
+
+            <div id="stats-table-container" style="display:none; margin-top:30px;">
+                <h3>📈 Performance Statistics</h3>
+                <table id="stats-table" class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Framework</th>
+                            <th>Final Avg Reward</th>
+                            <th>Max Reward</th>
+                            <th>Convergence (Episodes)</th>
+                            <th>Std Dev</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stats-tbody">
+                    </tbody>
+                </table>
             </div>
         </main>
     </div>
