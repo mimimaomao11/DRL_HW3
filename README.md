@@ -69,12 +69,11 @@ Includes:
 
 ## Results
 
-Below shows the smoothed reward curves:
+Below shows the smoothed reward curves comparing all the implemented models. Smoothed curves are used to better visualize the convergence trend by filtering out step-by-step stochastic variance.
 
-![All Models Comparison](results/plots/all_models_smooth.png)
-![All Models](results/plots/all_models.png)
-![All Compare](results/plots/all_compare.png)
-![Compare All](results/plots/compare_all.png)
+![All Models Smoothed Comparison](results/plots/all_models_smooth.png)
+
+*Figure: Training rewards over episodes. Rainbow DQN achieves the highest final reward, while Dueling and Double DQN show improved convergence speed and stability over the Baseline DQN.*
 
 ## Observations
 

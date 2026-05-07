@@ -303,10 +303,10 @@ function loadAndDisplayCharts() {
         plotName = currentModel;
     }
 
-    // Select charts based on model - correct path from docs/ to results/
-    const modelChart = `../results/plots/reward_${plotName}.png`;
-    const lossFile = `../results/plots/loss_${plotName}.png`;
-    const comparisonFile = '../results/plots/all_models_smooth.png';
+    // Select charts based on model - path updated for GitHub Pages compatibility
+    const modelChart = `./plots/reward_${plotName}.png`;
+    const lossFile = `./plots/loss_${plotName}.png`;
+    const comparisonFile = './plots/all_models_smooth.png';
 
     // Set chart sources with cache buster
     rewardChart.src = modelChart + '?t=' + Date.now();
