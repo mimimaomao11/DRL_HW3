@@ -27,6 +27,6 @@ class DuelingDQN(nn.Module):
         value = self.value(x)
         advantage = self.advantage(x)
 
-        # 🔥 核心：去掉平均值（穩定）
+        # Core: Remove mean for stability
         q = value + (advantage - advantage.mean(dim=1, keepdim=True))
         return q

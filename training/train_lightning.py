@@ -19,7 +19,7 @@ from models.dqn import DQN
 from utils.replay_buffer import ReplayBuffer
 
 print("=" * 60)
-print("🔥 DQN Training with PyTorch Lightning")
+print("DQN Training with PyTorch Lightning")
 print("=" * 60)
 
 # 超參數
@@ -179,7 +179,7 @@ if __name__ == "__main__":
     )
     
     # 開始訓練
-    print("\n🚀 Starting PyTorch Lightning training...\n")
+    print("\nStarting PyTorch Lightning training...\n")
     
     # 用自定義DataLoader進行訓練
     dataloader = DQNDataLoader(

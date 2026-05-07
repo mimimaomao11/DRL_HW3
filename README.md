@@ -4,7 +4,7 @@
 
 This project implements and compares several Deep Q-Network (DQN) variants in a GridWorld environment.
 
-📖 **Detailed Analysis**: Please refer to the [HW3 Understanding Report](HW3_Report.md) for an in-depth explanation of the Basic DQN, Experience Replay Buffer, Double DQN, and Dueling DQN.
+Detailed Analysis: Please refer to the [HW3 Understanding Report](HW3_Report.md) for an in-depth explanation of the Basic DQN, Experience Replay Buffer, Double DQN, and Dueling DQN.
 
 Implemented models:
 

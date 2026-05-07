@@ -25,7 +25,7 @@ let playInterval = null;
 let steps = 0;
 let totalReward = 0;
 let terminated = false;
-let quickResultMode = false; // 快速結果模式
+let quickResultMode = false;
 
 // DOM Elements
 const gridEl = document.getElementById('grid');
@@ -123,15 +123,15 @@ function renderGrid() {
                 cell.classList.add('wall');
             } else if (i === goalPos[0] && j === goalPos[1]) {
                 cell.classList.add('goal');
-                cell.innerHTML = '🏁';
+                cell.innerHTML = 'G';
             } else if (i === pitPos[0] && j === pitPos[1]) {
                 cell.classList.add('pit');
-                cell.innerHTML = '🔥';
+                cell.innerHTML = 'P';
             }
 
             if (i === agentPos[0] && j === agentPos[1]) {
                 cell.classList.add('agent');
-                cell.innerHTML = '🤖';
+                cell.innerHTML = 'A';
             }
         }
     }
@@ -177,14 +177,13 @@ function updateHeatmap() {
 }
 
 // 取得當前 state 的 Q-values
-// BUG FIX: Q-table 是 2D (row x col)，只用 agentPos 查詢即可（符合 JSON 結構）
+// Q-table is 2D (row x col), use agentPos for lookup
 function getQValues() {
     if (!qData || !qData[currentModel]) return null;
     return qData[currentModel][agentPos[0]][agentPos[1]];
 }
 
 // Step Simulation
-// BUG FIX: 移除 step() 內的 setTimeout(resetEnv)，改由呼叫端統一處理終止
 function step() {
     if (!qData || !qData[currentModel]) return;
     if (terminated) return;
@@ -249,7 +248,7 @@ function togglePlay() {
         btnPlay.classList.replace('btn-primary', 'btn-secondary');
         playInterval = setInterval(() => {
             if (terminated) {
-                resetEnv(); // 終止後先 reset，下一 tick 再繼續
+                resetEnv();
                 return;
             }
             step();
@@ -262,16 +261,16 @@ function togglePlay() {
     }
 }
 
-// 快速結果模式：直接顯示訓練結果圖表
+// Display training results and charts
 function showQuickResult() {
     quickResultMode = !quickResultMode;
     if (quickResultMode) {
-        btnQuickResult.innerText = "⏸ Hide Results";
+        btnQuickResult.innerText = "Hide Results";
         btnQuickResult.classList.replace('btn-success', 'btn-danger');
         loadAndDisplayCharts();
         updateStatsTable();
     } else {
-        btnQuickResult.innerText = "⏩ Quick Result";
+        btnQuickResult.innerText = "Quick Result";
         btnQuickResult.classList.replace('btn-danger', 'btn-success');
         document.getElementById('charts-container').style.display = 'none';
         document.getElementById('stats-table-container').style.display = 'none';
@@ -285,7 +284,7 @@ function loadChartsForFramework() {
     }
 }
 
-// 加載並顯示圖表
+// Load and display training result charts
 function loadAndDisplayCharts() {
     const chartsContainer = document.getElementById('charts-container');
     const rewardChart = document.getElementById('reward-chart');
@@ -294,12 +293,12 @@ function loadAndDisplayCharts() {
     
     if (!chartsContainer) return;
 
-    // 根據框架和模型選擇圖表
-    const modelChart = `results/plots/reward_${currentModel}.png`;
-    const lossFile = `results/plots/loss_${currentModel}.png`;
-    const comparisonFile = 'results/plots/all_models_smooth.png';
+    // Select charts based on model - correct path from docs/ to results/
+    const modelChart = `../results/plots/reward_${currentModel}.png`;
+    const lossFile = `../results/plots/loss_${currentModel}.png`;
+    const comparisonFile = '../results/plots/all_models_smooth.png';
 
-    // 設置圖表源
+    // Set chart sources with cache buster
     rewardChart.src = modelChart + '?t=' + Date.now();
     lossChart.src = lossFile + '?t=' + Date.now();
     comparisonChart.src = comparisonFile + '?t=' + Date.now();
@@ -418,7 +417,7 @@ fetch('q_values.json')
         if (rainbowAllZero) {
             console.warn("Rainbow Q-values are all zero. Training result not exported.");
             const opt = modelSelect.querySelector('option[value="rainbow"]');
-            if (opt) opt.text = 'Rainbow DQN (⚠️ 未訓練)';
+            if (opt) opt.text = 'Rainbow DQN (not trained)';
         }
 
         initGrids();

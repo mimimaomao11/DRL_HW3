@@ -218,6 +218,7 @@ select:focus {
 .btn-success {
     background: #22c55e;
     color: white;
+    flex-basis: auto;
 }
 
 .btn-success:hover {
@@ -228,6 +229,7 @@ select:focus {
 .btn-danger {
     background: #ef4444;
     color: white;
+    flex-basis: auto;
 }
 
 .btn-danger:hover {
@@ -326,25 +328,31 @@ select:focus {
 .stats-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    overflow-x: auto;
 }
 
 .stats-table thead {
     background: rgba(255, 255, 255, 0.1);
     color: var(--accent-primary);
     font-weight: 600;
+    position: sticky;
+    top: 0;
 }
 
 .stats-table th {
-    padding: 0.75rem;
-    text-align: left;
+    padding: 0.6rem 0.4rem;
+    text-align: center;
     border-bottom: 2px solid var(--glass-border);
+    min-width: 80px;
+    white-space: nowrap;
 }
 
 .stats-table td {
-    padding: 0.75rem;
+    padding: 0.6rem 0.4rem;
     border-bottom: 1px solid var(--glass-border);
     color: var(--text-secondary);
+    text-align: center;
 }
 
 .stats-table tbody tr:hover {
@@ -353,6 +361,12 @@ select:focus {
 
 .stats-table tbody tr:nth-child(even) {
     background: rgba(0, 0, 0, 0.1);
+}
+
+#stats-table-container {
+    overflow-x: auto;
+    width: 100%;
+    max-height: 400px;
 }
 
 /* Responsive Design */

@@ -136,5 +136,5 @@ for ep in range(episodes):
 os.makedirs("results/logs", exist_ok=True)
 np.savetxt("results/logs/rainbow_rewards.txt", rewards)
 
-print("🌈 Full Rainbow training done")
+print("Full Rainbow training done")
 torch.save(model.state_dict(), "results/models/rainbow.pth")

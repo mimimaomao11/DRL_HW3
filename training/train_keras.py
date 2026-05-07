@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from env.gridworld import GridWorld
 
-print("🚀 Fast Keras DQN (NO FREEZE VERSION)")
+print("Fast Keras DQN (NO FREEZE VERSION)")
 
 env = GridWorld(mode="random")
 
@@ -114,4 +114,4 @@ for ep in range(episodes):
 os.makedirs("results/logs", exist_ok=True)
 np.save("results/logs/keras_rewards.npy", reward_history)
 
-print("✅ Keras DONE (FAST VERSION)")
+print("Keras training completed (FAST VERSION)")
