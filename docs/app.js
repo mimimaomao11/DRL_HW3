@@ -359,6 +359,7 @@ frameworkSelect.addEventListener('change', (e) => {
 modelSelect.addEventListener('change', (e) => {
     currentModel = e.target.value;
     updateHeatmap();
+    loadChartsForFramework();
 });
 
 modeSelect.addEventListener('change', (e) => {

@@ -259,41 +259,52 @@ if __name__ == "__main__":
                   f"Avg(100): {avg_reward:.2f}, LR: {scheduler.get_last_lr()[0]:.6f}")
     
     # 保存模型
-    print("\n💾 Saving Lightning model...")
+    print("\nSaving Lightning model...")
     torch.save(lightning_module.model.state_dict(), "results/models/dqn_lightning.pth")
     
     # 繪製和保存圖表
-    print("📊 Saving plots...")
-    plt.figure(figsize=(12, 4))
+    print("Saving plots...")
     
-    plt.subplot(1, 2, 1)
-    plt.plot(reward_history)
+    # Reward Plot
+    plt.figure(figsize=(8, 4))
+    plt.plot(reward_history, alpha=0.3, label="Raw")
+    window = 20
+    if len(reward_history) >= window:
+        smoothed = np.convolve(reward_history, np.ones(window)/window, mode='valid')
+        plt.plot(range(window-1, len(reward_history)), smoothed, color='blue', label="MA(20)")
+    plt.legend()
     plt.xlabel('Episode')
     plt.ylabel('Reward')
     plt.title('Training Rewards (PyTorch Lightning)')
     plt.grid(True)
-    plt.savefig("results/plots/reward_lightning.png", dpi=100)
+    plt.savefig("results/plots/reward_lightning.png", dpi=100, bbox_inches='tight')
+    plt.close()
     
-    plt.subplot(1, 2, 2)
+    # Loss Plot
     if loss_history:
-        plt.plot(loss_history)
+        plt.figure(figsize=(8, 4))
+        plt.plot(loss_history, alpha=0.3, label="Raw")
+        window_loss = 100
+        if len(loss_history) >= window_loss:
+            smoothed_loss = np.convolve(loss_history, np.ones(window_loss)/window_loss, mode='valid')
+            plt.plot(range(window_loss-1, len(loss_history)), smoothed_loss, color='red', label="MA(100)")
+        plt.legend()
         plt.xlabel('Training Step')
         plt.ylabel('Loss')
         plt.title('Training Loss (PyTorch Lightning)')
         plt.grid(True)
-    plt.savefig("results/plots/loss_lightning.png", dpi=100)
-    
-    plt.close()
+        plt.savefig("results/plots/loss_lightning.png", dpi=100, bbox_inches='tight')
+        plt.close()
     
     # 保存rewards到npy
     np.save("results/logs/lightning_rewards.npy", reward_history)
     
     print("\n" + "=" * 60)
-    print("✅ PyTorch Lightning DQN training completed!")
-    print(f"✅ Total episodes: {len(reward_history)}")
-    print(f"✅ Final reward: {reward_history[-1]:.2f}")
-    print(f"✅ Average reward (last 100): {np.mean(reward_history[-100:]):.2f}")
-    print(f"✅ Max reward: {max(reward_history):.2f}")
-    print(f"✅ Models saved to: results/models/")
-    print(f"✅ Plots saved to: results/plots/")
+    print("PyTorch Lightning DQN training completed!")
+    print(f"Total episodes: {len(reward_history)}")
+    print(f"Final reward: {reward_history[-1]:.2f}")
+    print(f"Average reward (last 100): {np.mean(reward_history[-100:]):.2f}")
+    print(f"Max reward: {max(reward_history):.2f}")
+    print(f"Models saved to: results/models/")
+    print(f"Plots saved to: results/plots/")
     print("=" * 60)

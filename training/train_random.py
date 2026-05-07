@@ -96,7 +96,12 @@ for ep in range(episodes):
         print(f"[Random] Episode {ep}, Reward: {total_reward:.2f}")
 
 # plot
-plt.plot(reward_history)
+plt.plot(reward_history, alpha=0.3, label="Raw")
+window = 20
+if len(reward_history) >= window:
+    smoothed = np.convolve(reward_history, np.ones(window)/window, mode='valid')
+    plt.plot(range(window-1, len(reward_history)), smoothed, color='blue', label="MA(20)")
+plt.legend()
 plt.title("Random Mode Reward")
 plt.savefig("results/plots/random_reward.png")
 

@@ -13,7 +13,7 @@ from models.rainbow_dqn import RainbowDQN
 from utils.n_step_buffer import NStepPERBuffer
 
 print("=" * 50)
-print("🌈 Full Rainbow DQN Training (Double + Dueling + PER + Noisy + C51 + N-Step)")
+print("Full Rainbow DQN Training (Double + Dueling + PER + Noisy + C51 + N-Step)")
 print("=" * 50)
 
 env = GridWorld(mode="random")
@@ -142,7 +142,12 @@ np.savetxt("results/logs/rainbow_rewards.txt", rewards)
 
 # plot
 plt.figure()
-plt.plot(rewards)
+plt.plot(rewards, alpha=0.3, label="Raw")
+window = 20
+if len(rewards) >= window:
+    smoothed = np.convolve(rewards, np.ones(window)/window, mode='valid')
+    plt.plot(range(window-1, len(rewards)), smoothed, color='blue', label="MA(20)")
+plt.legend()
 plt.title("Rainbow DQN - Reward Curve")
 plt.xlabel("Episode")
 plt.ylabel("Reward")
@@ -150,7 +155,12 @@ plt.savefig("results/plots/reward_rainbow.png", dpi=100, bbox_inches='tight')
 plt.close()
 
 plt.figure()
-plt.plot(loss_history)
+plt.plot(loss_history, alpha=0.3, label="Raw")
+window_loss = 100
+if len(loss_history) >= window_loss:
+    smoothed_loss = np.convolve(loss_history, np.ones(window_loss)/window_loss, mode='valid')
+    plt.plot(range(window_loss-1, len(loss_history)), smoothed_loss, color='red', label="MA(100)")
+plt.legend()
 plt.title("Rainbow DQN - Loss Curve")
 plt.xlabel("Training Step")
 plt.ylabel("Loss")

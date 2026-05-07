@@ -120,7 +120,12 @@ np.save("results/logs/keras_rewards.npy", reward_history)
 
 # plot
 plt.figure()
-plt.plot(reward_history)
+plt.plot(reward_history, alpha=0.3, label="Raw")
+window = 20
+if len(reward_history) >= window:
+    smoothed = np.convolve(reward_history, np.ones(window)/window, mode='valid')
+    plt.plot(range(window-1, len(reward_history)), smoothed, color='blue', label="MA(20)")
+plt.legend()
 plt.title("Keras DQN - Reward Curve")
 plt.xlabel("Episode")
 plt.ylabel("Reward")
@@ -128,7 +133,12 @@ plt.savefig("results/plots/reward_keras.png", dpi=100, bbox_inches='tight')
 plt.close()
 
 plt.figure()
-plt.plot(loss_history)
+plt.plot(loss_history, alpha=0.3, label="Raw")
+window_loss = 100
+if len(loss_history) >= window_loss:
+    smoothed_loss = np.convolve(loss_history, np.ones(window_loss)/window_loss, mode='valid')
+    plt.plot(range(window_loss-1, len(loss_history)), smoothed_loss, color='red', label="MA(100)")
+plt.legend()
 plt.title("Keras DQN - Loss Curve")
 plt.xlabel("Training Step")
 plt.ylabel("Loss")

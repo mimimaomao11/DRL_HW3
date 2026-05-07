@@ -93,11 +93,21 @@ for ep in range(episodes):
         print(f"[Double] Episode {ep}, Reward: {total_reward:.2f}")
 
 # 存圖
-plt.plot(reward_history)
+plt.plot(reward_history, alpha=0.3, label="Raw")
+window = 20
+if len(reward_history) >= window:
+    smoothed = np.convolve(reward_history, np.ones(window)/window, mode='valid')
+    plt.plot(range(window-1, len(reward_history)), smoothed, color='blue', label="MA(20)")
+plt.legend()
 plt.savefig("results/plots/reward_double.png")
 plt.clf()
 
-plt.plot(loss_history)
+plt.plot(loss_history, alpha=0.3, label="Raw")
+window_loss = 100
+if len(loss_history) >= window_loss:
+    smoothed_loss = np.convolve(loss_history, np.ones(window_loss)/window_loss, mode='valid')
+    plt.plot(range(window_loss-1, len(loss_history)), smoothed_loss, color='red', label="MA(100)")
+plt.legend()
 plt.savefig("results/plots/loss_double.png")
 
 print("Double DQN training done")
