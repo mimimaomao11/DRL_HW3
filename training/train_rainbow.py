@@ -37,6 +37,7 @@ episodes = 1000
 batch_size = 32
 
 rewards = []
+loss_history = []
 
 def projection_distribution(next_state, rewards, dones):
     batch_size = next_state.size(0)
@@ -121,6 +122,8 @@ for ep in range(episodes):
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             optimizer.step()
+            
+            loss_history.append(loss.item())
 
         if done:
             break
@@ -134,7 +137,25 @@ for ep in range(episodes):
         print(f"[Full Rainbow] Episode {ep}, Reward: {total_reward:.2f}")
 
 os.makedirs("results/logs", exist_ok=True)
+os.makedirs("results/plots", exist_ok=True)
 np.savetxt("results/logs/rainbow_rewards.txt", rewards)
+
+# plot
+plt.figure()
+plt.plot(rewards)
+plt.title("Rainbow DQN - Reward Curve")
+plt.xlabel("Episode")
+plt.ylabel("Reward")
+plt.savefig("results/plots/reward_rainbow.png", dpi=100, bbox_inches='tight')
+plt.close()
+
+plt.figure()
+plt.plot(loss_history)
+plt.title("Rainbow DQN - Loss Curve")
+plt.xlabel("Training Step")
+plt.ylabel("Loss")
+plt.savefig("results/plots/loss_rainbow.png", dpi=100, bbox_inches='tight')
+plt.close()
 
 print("Full Rainbow training done")
 torch.save(model.state_dict(), "results/models/rainbow.pth")

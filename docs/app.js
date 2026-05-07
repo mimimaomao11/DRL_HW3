@@ -293,9 +293,19 @@ function loadAndDisplayCharts() {
     
     if (!chartsContainer) return;
 
+    // Map framework/model to correct plot filename
+    let plotName = currentModel;
+    if (currentFramework === 'keras') {
+        plotName = 'keras';
+    } else if (currentFramework === 'lightning') {
+        plotName = 'lightning';
+    } else if (currentFramework === 'pytorch') {
+        plotName = currentModel;
+    }
+
     // Select charts based on model - correct path from docs/ to results/
-    const modelChart = `../results/plots/reward_${currentModel}.png`;
-    const lossFile = `../results/plots/loss_${currentModel}.png`;
+    const modelChart = `../results/plots/reward_${plotName}.png`;
+    const lossFile = `../results/plots/loss_${plotName}.png`;
     const comparisonFile = '../results/plots/all_models_smooth.png';
 
     // Set chart sources with cache buster

@@ -4,6 +4,7 @@ import tensorflow as tf
 from collections import deque
 import sys
 import os
+import matplotlib.pyplot as plt
 
 # 添加項目根目錄到 Python 路徑
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -51,6 +52,7 @@ episodes = 1000
 batch_size = 32
 
 reward_history = []
+loss_history = []
 
 # ===== Training =====
 for ep in range(episodes):
@@ -98,6 +100,7 @@ for ep in range(episodes):
 
             grads = tape.gradient(loss, model.trainable_variables)
             optimizer.apply_gradients(zip(grads, model.trainable_variables))
+            loss_history.append(loss.numpy())
 
         if done:
             break
@@ -112,6 +115,24 @@ for ep in range(episodes):
 
 # save
 os.makedirs("results/logs", exist_ok=True)
+os.makedirs("results/plots", exist_ok=True)
 np.save("results/logs/keras_rewards.npy", reward_history)
+
+# plot
+plt.figure()
+plt.plot(reward_history)
+plt.title("Keras DQN - Reward Curve")
+plt.xlabel("Episode")
+plt.ylabel("Reward")
+plt.savefig("results/plots/reward_keras.png", dpi=100, bbox_inches='tight')
+plt.close()
+
+plt.figure()
+plt.plot(loss_history)
+plt.title("Keras DQN - Loss Curve")
+plt.xlabel("Training Step")
+plt.ylabel("Loss")
+plt.savefig("results/plots/loss_keras.png", dpi=100, bbox_inches='tight')
+plt.close()
 
 print("Keras training completed (FAST VERSION)")
