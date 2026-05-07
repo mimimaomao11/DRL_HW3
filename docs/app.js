@@ -350,20 +350,26 @@ function updateStatsTable() {
     statsTable.style.display = 'block';
 }
 
-// Event Listeners
-frameworkSelect.addEventListener('change', (e) => {
-    currentFramework = e.target.value;
-    
+// Update model dropdown status based on framework
+function updateModelSelectStatus() {
     // 如果選擇的是 keras 或 lightning，強制鎖定為 Basic DQN
-    // 因為這兩個框架目前只有實作基礎 DQN 版本
     if (currentFramework !== 'pytorch') {
         modelSelect.value = 'dqn';
         currentModel = 'dqn';
         modelSelect.disabled = true;
+        modelSelect.style.opacity = '0.3';
+        modelSelect.style.cursor = 'not-allowed';
     } else {
         modelSelect.disabled = false;
+        modelSelect.style.opacity = '1';
+        modelSelect.style.cursor = 'pointer';
     }
-    
+}
+
+// Event Listeners
+frameworkSelect.addEventListener('change', (e) => {
+    currentFramework = e.target.value;
+    updateModelSelectStatus();
     updateHeatmap();
     loadChartsForFramework();
 });
@@ -371,6 +377,7 @@ frameworkSelect.addEventListener('change', (e) => {
 modelSelect.addEventListener('change', (e) => {
     currentModel = e.target.value;
     updateHeatmap();
+
     loadChartsForFramework();
 });
 
@@ -443,6 +450,8 @@ fetch('q_values.json')
             if (opt) opt.text = 'Rainbow DQN (not trained)';
         }
 
+        currentFramework = frameworkSelect.value;
+        updateModelSelectStatus();
         initGrids();
         resetEnv();
     })
